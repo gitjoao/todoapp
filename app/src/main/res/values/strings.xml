@@ -1,0 +1,10 @@
+<resources>
+    <string name="app_name">todo app</string>
+    <string name="text_button_open">Novo</string>
+    <string name="string_todo">Criar todo</string>
+    <string name="string_hint_todo">Informe o TODO</string>
+    <string name="text_button_save">Salvar</string>
+    <string name="text_button_edit">Editar</string>
+    <string name="text_button_delete">Deletar</string>
+    <string name="text_details">Detalhes</string>
+</resources>
