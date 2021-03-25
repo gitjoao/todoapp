@@ -7,4 +7,5 @@
     <string name="text_button_edit">Editar</string>
     <string name="text_button_delete">Deletar</string>
     <string name="text_details">Detalhes</string>
+    <string name="text_save_success">Salvo com sucesso!</string>
 </resources>

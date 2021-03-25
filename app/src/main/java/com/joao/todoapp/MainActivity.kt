@@ -4,11 +4,16 @@ import android.content.Intent
 import android.os.Bundle
 import android.view.View
 import android.widget.Button
+import android.widget.RelativeLayout
 import android.widget.Toast
+import android.widget.Toolbar
 import androidx.appcompat.app.AppCompatActivity
+import androidx.databinding.DataBindingUtil
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.joao.todoapp.adapter.TodoAdapter
+import com.joao.todoapp.databinding.ActivityMainBinding
+import com.joao.todoapp.databinding.ToolbarDefaultBinding
 import com.joao.todoapp.services.RetroFitInstance
 import com.joao.todoapp.services.TodoModel
 import com.joao.todoapp.services.TodoModelEdit
@@ -18,17 +23,16 @@ import retrofit2.Response
 import java.time.Instant
 
 class MainActivity:AppCompatActivity(), View.OnClickListener, TodoAdapter.Click {
-    lateinit var buttonOpen: Button
-    lateinit var recyclerViewTodo: RecyclerView
     lateinit var adpter: TodoAdapter
+    lateinit var binding: ActivityMainBinding
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_main)
-        adpter = TodoAdapter(arrayListOf(), this)
+        binding = DataBindingUtil.setContentView(this, R.layout.activity_main)
+        adpter = TodoAdapter(this)
+        binding.buttonOpen.setOnClickListener(this)
 
-        buttonOpen = findViewById(R.id.button_open)
-        buttonOpen.setOnClickListener(this)
-        recyclerViewTodo = findViewById(R.id.recyclerView)
+        binding.toolbarDefault.textoTitulo.text = "Lista"
+        binding.toolbarDefault.buttonBack.visibility = View.GONE
         setUp()
     }
 
@@ -50,8 +54,8 @@ class MainActivity:AppCompatActivity(), View.OnClickListener, TodoAdapter.Click 
         })
     }
     fun setUp() {
-        recyclerViewTodo.layoutManager = LinearLayoutManager(this, RecyclerView.VERTICAL, false)
-        recyclerViewTodo.adapter = adpter
+        binding.recyclerView.layoutManager = LinearLayoutManager(this, RecyclerView.VERTICAL, false)
+        binding.recyclerView.adapter = adpter
     }
 
     override fun getItem(todoItem: TodoModel) {
@@ -62,7 +66,6 @@ class MainActivity:AppCompatActivity(), View.OnClickListener, TodoAdapter.Click 
         intent.putExtras(bundle)
         startActivity(intent)
 
-        Toast.makeText(applicationContext, todoItem.id, Toast.LENGTH_LONG).show()
     }
 
     override fun onClick(v: View) {

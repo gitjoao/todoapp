@@ -3,13 +3,14 @@ package com.joao.todoapp.adapter
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.LinearLayout
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.joao.todoapp.R
 import com.joao.todoapp.services.TodoModel
 
-class TodoAdapter (val list: ArrayList<TodoModel>, val callBack: Click):RecyclerView.Adapter<TodoAdapter.ViewHolder>() {
-
+class TodoAdapter (val callBack: Click):RecyclerView.Adapter<TodoAdapter.ViewHolder>() {
+    private val list: ArrayList<TodoModel> = arrayListOf()
     interface Click {
      fun getItem (todoItem: TodoModel)
     }

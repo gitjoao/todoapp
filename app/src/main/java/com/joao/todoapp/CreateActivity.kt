@@ -1,11 +1,10 @@
 package com.joao.todoapp
 
 import android.os.Bundle
-import android.widget.Button
-import android.widget.EditText
-import android.widget.TextView
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
+import androidx.databinding.DataBindingUtil
+import com.joao.todoapp.databinding.ActivityCreateBinding
 import com.joao.todoapp.services.RetroFitInstance
 import com.joao.todoapp.services.TodoModel
 import com.joao.todoapp.services.TodoModelEdit
@@ -15,36 +14,35 @@ import retrofit2.Callback
 import retrofit2.Response
 
 class CreateActivity:AppCompatActivity() {
-    lateinit var input_todo: EditText
-    lateinit var buttonSave: Button
-    lateinit var string_todo: TextView
+    lateinit var binding: ActivityCreateBinding
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         val itemTodo: TodoModelEdit? = intent?.extras?.getSerializable("todoItem") as TodoModelEdit?
         val texto: String? = intent?.extras?.getSerializable("titulo") as String?
 
-        setContentView(R.layout.activity_create)
-        input_todo = findViewById(R.id.input_todo)
-        buttonSave = findViewById(R.id.button_save)
-
-        string_todo = findViewById(R.id.string_todo)
-
-        buttonSave.setOnClickListener {
-            saveTodo(input_todo.text.trim().toString())
+        binding = DataBindingUtil.setContentView(this, R.layout.activity_create)
+        binding.buttonSave.setOnClickListener {
+            saveTodo(binding.inputTodo.text.trim().toString())
         }
 
         if (itemTodo != null) {
-            input_todo.setText(itemTodo.info)
-            string_todo.text = texto
-            buttonSave.setOnClickListener {
-                val infoEdit = TodoModelRequest (input_todo.text.trim().toString())
+            binding.toolbarDefault.textoTitulo.text = "Editar"
+            binding.inputTodo.setText(itemTodo.info)
+            binding.stringTodo.text = texto
+            binding.buttonSave.setOnClickListener {
+                val infoEdit = TodoModelRequest (binding.inputTodo.text.trim().toString())
                 editTodo(infoEdit, itemTodo.id)
             }
         } else {
-            buttonSave.setOnClickListener {
-                saveTodo(input_todo.text.trim().toString())
+            binding.toolbarDefault.textoTitulo.text = "Criar"
+            binding.buttonSave.setOnClickListener {
+                saveTodo(binding.inputTodo.text.trim().toString())
             }
         }
+        binding.toolbarDefault.buttonBack.setOnClickListener {
+            finish()
+        }
+
     }
 
     fun saveTodo(info: String) {
